@@ -1,88 +1,27 @@
 # AgentScript-next Repository
 
-This is a repository for the next version of the [AgentScript 1.0](http://agentscript.org) Agent Based Modeling framework, converted into an es6 module based project using Three.js.
+This npm package is a wild fork of ASX.
+
+The purpose of this fork is to facilitate usage of asx as an `npm install`'ed library.
+
+The true ASX repo maintained by [backspaces](https://github.com/backspaces) can be found [here](https://github.com/backspaces/asx).
+
+This wild fork for NPM is a frozen release published by Vandivier, found [here](https://github.com/Vandivier/asx).
+
+ASX is the next version of the [AgentScript 1.0](http://agentscript.org) Agent Based Modeling framework.
 
 ## Developer Information
 
-To clone a fresh repo, for PRs or your own local verson:
-* install [node-gyp](https://github.com/nodejs/node-gyp)
-* run the following commands with [Git Bash](https://git-for-windows.github.io/), not cmd.exe or anything else.
-* `npm install` # install dev dependencies
-* `npm run build-node`
-* write your model and add models/src, then `git push`
-* enable gh-pages for your branch and open `./models?<model name>` to run a model. For example, see [http://vandivier.github.io/asx/models?diffuse](http://vandivier.github.io/asx/models?diffuse)
+* via bash, `npm install asx-abm`
+* in your JS, `const AS = require('asx-abm');` or `import AS as * from 'asx-abm';`
 
-All workflow is npm run scripts.  See package.json's scripts, or simply run `npm run` for a list. [JavaScript Standard Style](https://standardjs.com/) is [used](https://github.com/backspaces/asx/blob/master/.eslintrc.json).
+For an example on the usage of this library, see this frozen branch release of [charm-abm v0.0.3](https://github.com/Vandivier/charm-abm/tree/asx-as-lib-mvp).
 
-The repo has no "derived" files, other than the gh-page, see below, i.e. won't run by just cloning. To complete the install, use `npm install` and `npm run build` which refreshes npm dependencies and does a clean build of the repo.
+You may or may not be able to look at the [latest master branch revision](https://github.com/Vandivier/charm-abm) from charm-abm as well.
 
-## Github Pages
+Or cut to the good stuff and view a running model via gh-pages [here](https://vandivier.github.io/asx/models/?diffuse).
 
-A [gh-page](http://backspaces.github.io/asx/) is used for the site. It contains the master repo, including the derived files, and is our documentation.
-
-It uses [the docs/ simplification](https://help.github.com/articles/user-organization-and-project-pages/#project-pages) for gh-page creation. We use [Docsify](https://docsify.js.org/#/?id=docsify), a dynamic markdown based documentation system, which you'll see when you go to the gh-page.
-
-The gh-page can be used to run example models:
-* [http://backspaces.github.io/asx/models?diffuse](http://backspaces.github.io/asx/models?diffuse)
-
-And as a CDN for modules and legacy bundles, see [**Modules and Bundles**](#modules-and-bundles) below.
-
-## Three.js
-
-We have converted from layers of 2D canvases to a single WebGL canvas, currently managed by [Three.js](https://threejs.org/). This is a breaking change, primarily changing subclassing of class Model. Each of the prior layers is now a single Three Mesh within the Three scene graph.
-
-To configure the Three parameters, we've introduced a second configuration object for renderers. The Model constructor thus is:
-
-```
-// The Model constructor takes a DOM div and model and renderer options.
-// Default values are given for all constructor arguments.
-constructor (div = document.body,
-             modelOptions = Model.defaultWorld(),
-             rendererOptions = Model.defaultRenderer()) {
-```
-
-The conversion of the [fire](http://backspaces.github.io/asx/models?fire) model, [source here](https://github.com/backspaces/asx/blob/master/models/src/fire.js), is an example of the minor changes needed in converting to Three.js.
-
-## Modules and Bundles
-
-ASX is an entirely es6 Modules based, dual deploy. By "dual" we mean that we support es6 Modules, along with legacy `<script>` tags, both in our models/index.html files and the individual demo models.
-
-The dist/ dir includes both a [Rollup](https://rollupjs.org/) generated legacy [IIFE](http://adripofjavascript.com/blog/drips/an-introduction-to-iffes-immediately-invoked-function-expressions.html) global, window.AS, for script users, and the AS/ dir of the modules for direct native module implementations (Canary, Edge, FFox Nightly, iOS Safari and Safari Technology Preview), see the [CanIUse](http://caniuse.com/#search=modules) page for current browser support.
-
-It can also be used as a CDN for all the es6 Modules:
-
-* `import Model from` '[http://backspaces.github.io/asx/dist/AS/Model.js](http://backspaces.github.io/asx/dist/AS/Model.js)'
-
-The es6 modules are also available as a single Rollup es6 Module bundle
-* `import {ColorMap, Model, util} from` '[http://backspaces.github.io/asx/dist/AS.module.js](http://backspaces.github.io/asx/dist/AS.module.js)'
-
-Finally, they are also available as a traditional legacy IIFE Rollup bundle:
-* `<script src="`[http://backspaces.github.io/asx/dist/AS.js](http://backspaces.github.io/asx/dist/AS.js)`"></script>`
-
-
-## Files
-
-Our directory layout is:
-```
-bin: workflow scripts
-dist: AS.js & AS.module.js bundles & AS/ es6 source.
-docs: gh-page
-models: sample models
-src: es6 modules for AS
-```
-
-Within models/ are src/ (es6 modules) and scripts/ (legacy) and an index.html which runs the src/scripts files as a query string/REST. Both index.html files have a default model if no query string given.
-
-There are currently two ways to run a sample model: es6 modules (src/) or legacy scripts (scripts/), the former runs only in browsers supporting modules (see above):
-
-* [http://backspaces.github.io/asx/models?scripts/fire](http://backspaces.github.io/asx/models?scripts/fire)
-* [http://backspaces.github.io/asx/models?src/fire](http://backspaces.github.io/asx/models?src/fire)
-
-The default directory is scripts/ for now, but will convert to es6 modules, src/, when widely supported. This url will use the default:
-
-* [http://backspaces.github.io/asx/models?fire](http://backspaces.github.io/asx/models?fire)
-
-The current sample models are: diffuse, exit, fire, links, turtles
+You can view a gh-pages model running off of backspace's main repo [here](https://backspaces.github.io/asx/models/?diffuse).
 
 ## License
 

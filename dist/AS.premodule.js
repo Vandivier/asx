@@ -1,8 +1,4 @@
 /* eslint-disable */
-import THREE from '../dist/three.wrapper.js';
-import '../dist/OrbitControls.wrapper.js';
-import Stats from '../dist/stats.wrapper.js';
-import dat from '../dist/dat.gui.wrapper.js';
 
 // A set of useful misc utils which will eventually move to individual files.
 // Note we use arrow functions one-liners, more likely to be optimized.
@@ -2465,10 +2461,19 @@ class World {
     this.maxXcor = this.maxX + 0.5;
     this.minYcor = this.minY - 0.5;
     this.maxYcor = this.maxY + 0.5;
+    this.centerX = (this.minX + this.maxX) / 2;
+    this.centerY = (this.minY + this.maxY) / 2;
   }
   isOnWorld (x, y) {
     return (this.minXcor <= x) && (x <= this.maxXcor) &&
            (this.minYcor <= y) && (y <= this.maxYcor)
+  }
+  setCtxTransform (ctx) {
+    ctx.canvas.width = this.width;
+    ctx.canvas.height = this.height;
+    ctx.save();
+    ctx.scale(this.patchSize, -this.patchSize);
+    ctx.translate(-(this.minXcor), -(this.maxYcor));
   }
 }
 
@@ -3692,7 +3697,7 @@ class CanvasMesh extends BaseMesh {
     if (this.mesh) this.dispose();
     const {textureOptions, z} = this.options;
     Object.assign(this, { canvas, z, textureOptions });
-    const {width, height, numX, numY} = this.model.world;
+    const {width, height, numX, numY, centerX, centerY} = this.model.world;
 
     const texture = new THREE.CanvasTexture(canvas);
     for (const key in textureOptions) {
@@ -3700,6 +3705,7 @@ class CanvasMesh extends BaseMesh {
     }
 
     const geometry = new THREE.PlaneGeometry(width, height, numX, numY);
+    geometry.translate(centerX, centerY, 0);
 
     const material = new THREE.MeshBasicMaterial({
       map: texture,
@@ -3719,6 +3725,11 @@ class CanvasMesh extends BaseMesh {
 }
 
 // Several classes for patches, turtles, links, etc.
+
+// ============= DrawingMesh =============
+
+// Drawing meshes are a form of Canvas Mesh
+
 
 // ============= PatchesMesh =============
 
@@ -4013,6 +4024,7 @@ class Three {
   initThree () {
     const {clientWidth, clientHeight} = this.model.div;
     const {orthoView, clearColor} = this;
+    // const {width, height, centerX, centerY} = this.model.world
     const {width, height} = this.model.world;
     const [halfW, halfH] = [width / 2, height / 2];
 
@@ -4027,10 +4039,13 @@ class Three {
 
     const perspectiveCam =
       new THREE.PerspectiveCamera(45, clientWidth / clientHeight, 1, 10000);
+    // perspectiveCam.position.set(width + centerX, -width - centerY, width)
     perspectiveCam.position.set(width, -width, width);
+    // perspectiveCam.lookAt(new THREE.Vector3(centerX, centerY, 0))
     perspectiveCam.up.set(0, 0, 1);
 
     const scene = new THREE.Scene();
+    // scene.position = new THREE.Vector3(centerX, centerY, 0)
     const camera = orthoView ? orthographicCam : perspectiveCam;
 
     // if (orthoView)
@@ -4168,17 +4183,18 @@ class Model {
     this.anim = new Animator(this);
 
     // Initialize model calling `startup`, `reset` .. which calls `setup`.
-    this.modelReady = false;
-    this.startup().then(() => {
-      // this.reset(); this.setup(); this.modelReady = true
-      this.reset(); this.modelReady = true;
-    });
+    // this.modelReady = false
+    // this.startup().then(() => {
+    //   // this.reset(); this.setup(); this.modelReady = true
+    //   this.reset(); this.modelReady = true
+    // })
+    this.reset(); // REMIND: Temporary
   }
   // Call fcn(this) when any async
-  whenReady (fcn) {
-    // util.waitPromise(() => this.modelReady).then(fcn())
-    util.waitOn(() => this.modelReady, () => fcn(this));
-  }
+  // whenReady (fcn) {
+  //   // util.waitPromise(() => this.modelReady).then(fcn())
+  //   util.waitOn(() => this.modelReady, () => fcn(this))
+  // }
   // Add additional world variables derived from constructor's `modelOptions`.
   // setWorld () {
   //   const world = this.world
@@ -4224,7 +4240,7 @@ class Model {
   }
   reset (restart = false) {
     this.anim.reset();
-    this.world.setWorld();
+    this.world.setWorld(); // allow world to change?
 
     this.refreshLinks = this.refreshTurtles = this.refreshPatches = true;
 
@@ -4247,7 +4263,7 @@ class Model {
     // this.meshes.links.init(this.links)
     // this.setAgentSetViewProps(this.links, this.meshes.links)
 
-    this.setup();
+    // this.setup()
     if (restart) this.start();
   }
 
@@ -4255,20 +4271,16 @@ class Model {
   // A user's model is made by subclassing Model and over-riding these
   // three abstract methods. `super` need not be called.
 
-  // Async function to initialize model resources (images, files).
-  async startup () {} // called by constructor.
-  // Initialize your model variables and defaults here.
-  setup () {} // called by constructor (after startup) or by reset()
+  setup () {} // Your initialization code goes here
   // Update/step your model here
   step () {} // called each step of the animation
 
   // Start/stop the animation. Return model for chaining.
   start () {
-    util.waitOn(() => this.modelReady, () => {
-      this.anim.start();
-    });
-    // util.waitPromise(() => this.modelReady)
-    // .then(() => { this.anim.start() })
+    // util.waitOn(() => this.modelReady, () => {
+    //   this.anim.start()
+    // })
+    this.anim.start();
     return this
   }
   stop () { this.anim.stop(); }

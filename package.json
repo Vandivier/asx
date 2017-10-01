@@ -1,15 +1,81 @@
 {
-  "name": "asx-abm",
-  "version": "v0.3.2",
-  "description": "AgentScript, 2nd Edition",
-  "homepage": "http://backspaces.github.io/asx/",
-  "main": "dist/AS.js",
-  "author": "Owen Densmore",
-  "license": "GPL-3.0",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/backspaces/asx.git"
+  "_args": [
+    [
+      {
+        "raw": "asx-abm@^0.3.4",
+        "scope": null,
+        "escapedName": "asx-abm",
+        "name": "asx-abm",
+        "rawSpec": "^0.3.4",
+        "spec": ">=0.3.4 <0.4.0",
+        "type": "range"
+      },
+      "D:\\github\\charm-abm"
+    ]
+  ],
+  "_from": "asx-abm@>=0.3.4 <0.4.0",
+  "_id": "asx-abm@0.3.4",
+  "_inCache": true,
+  "_location": "/asx-abm",
+  "_nodeVersion": "8.4.0",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/asx-abm-0.3.4.tgz_1505968747944_0.9510350537020713"
   },
+  "_npmUser": {
+    "name": "john-vandivier",
+    "email": "john@afterecon.com"
+  },
+  "_npmVersion": "4.0.5",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "asx-abm@^0.3.4",
+    "scope": null,
+    "escapedName": "asx-abm",
+    "name": "asx-abm",
+    "rawSpec": "^0.3.4",
+    "spec": ">=0.3.4 <0.4.0",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/asx-abm/-/asx-abm-0.3.4.tgz",
+  "_shasum": "646cffe6db167f07d334154e577ee4699e03552d",
+  "_shrinkwrap": null,
+  "_spec": "asx-abm@^0.3.4",
+  "_where": "D:\\github\\charm-abm",
+  "author": {
+    "name": "Owen Densmore"
+  },
+  "bugs": {
+    "url": "https://github.com/backspaces/asx/issues"
+  },
+  "dependencies": {
+    "dat.gui": "github:dataarts/dat.gui",
+    "stats.js": "^0.17.0",
+    "three": "latest"
+  },
+  "description": "AgentScript, 2nd Edition",
+  "devDependencies": {
+    "butternut": "^0.4.6",
+    "graceful-fs": "^4.1.11",
+    "rollup": "^0.41.6",
+    "sane": "^1.6.0",
+    "shelljs": "^0.7.8"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "646cffe6db167f07d334154e577ee4699e03552d",
+    "tarball": "https://registry.npmjs.org/asx-abm/-/asx-abm-0.3.4.tgz"
+  },
+  "docsfiles": [
+    "dist",
+    "models",
+    "README.md"
+  ],
+  "gitHead": "364a604c0fa8463502738ee9ff28b1f4779cfdee",
+  "homepage": "http://backspaces.github.io/asx/",
   "keywords": [
     "netlogo",
     "3D",
@@ -24,6 +90,40 @@
     "node_modules/stats.js/build/stats.min.js",
     "node_modules/dat.gui/build/dat.gui.min.js"
   ],
+  "license": "GPL-3.0",
+  "main": "dist/AS.module.js",
+  "maintainers": [
+    {
+      "name": "john-vandivier",
+      "email": "john@afterecon.com"
+    }
+  ],
+  "mkdirs": [
+    "dist",
+    "dist/AS",
+    "libs",
+    "models/scripts"
+  ],
+  "name": "asx-abm",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/backspaces/asx.git"
+  },
+  "scripts": {
+    "build": "npm run clean && npm run build-libs && npm run build-models && npm run build-dist && squash dist/AS.js > dist/AS.min.js && squash dist/AS.module.js > dist/AS.module.min.js && npm run build-docs && cp docs/README.md .",
+    "build-dist": "rollup -c && cp src/* dist/AS",
+    "build-docs": "cp -Rp `bin/pkgkey.js docsfiles` docs",
+    "build-libs": "cp `bin/pkgkey.js libs` libs && bin/wraplibs.js",
+    "build-models": "bin/buildscripts.sh models/src",
+    "build-node": "node js/build",
+    "clean": "rm -rf `bin/pkgkey.js mkdirs` && npm run mkdirs",
+    "mkdirs": "mkdir -p `bin/pkgkey.js mkdirs`",
+    "start": "node node_modules/serve/bin/serve.js -p 3000",
+    "watch": "sane 'npm run build-models' './models/src/' & sane 'npm run build-dist' './src/'"
+  },
+  "version": "0.3.4",
   "wraplibs": [
     [
       "libs/three.min.js",
@@ -41,40 +141,5 @@
       "libs/stats.min.js",
       "Stats"
     ]
-  ],
-  "docsfiles": [
-    "dist",
-    "models",
-    "README.md"
-  ],
-  "mkdirs": [
-    "dist",
-    "dist/AS",
-    "libs",
-    "models/scripts"
-  ],
-  "scripts": {
-    "build-node": "node js/build",
-    "clean": "rm -rf `bin/pkgkey.js mkdirs` && npm run mkdirs",
-    "mkdirs": "mkdir -p `bin/pkgkey.js mkdirs`",
-    "start": "node node_modules/serve/bin/serve.js -p 3000",
-    "build": "npm run clean && npm run build-libs && npm run build-models && npm run build-dist && squash dist/AS.js > dist/AS.min.js && squash dist/AS.module.js > dist/AS.module.min.js && npm run build-docs && cp docs/README.md .",
-    "build-libs": "cp `bin/pkgkey.js libs` libs && bin/wraplibs.js",
-    "build-docs": "cp -Rp `bin/pkgkey.js docsfiles` docs",
-    "build-models": "bin/buildscripts.sh models/src",
-    "build-dist": "rollup -c && cp src/* dist/AS",
-    "watch": "sane 'npm run build-models' './models/src/' & sane 'npm run build-dist' './src/'"
-  },
-  "dependencies": {
-    "dat.gui": "dataarts/dat.gui",
-    "stats.js": "^0.17.0",
-    "three": "latest"
-  },
-  "devDependencies": {
-    "butternut": "^0.4.6",
-    "graceful-fs": "^4.1.11",
-    "rollup": "^0.41.6",
-    "sane": "^1.6.0",
-    "shelljs": "^0.7.8"
-  }
+  ]
 }

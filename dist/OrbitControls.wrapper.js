@@ -1,5 +1,9 @@
+const THREE = require('three');
+
+window.THREE = THREE;
+
 // Programmatically created by wraplib.js
-if (window.THREE.OrbitControls) {
+if (window.THREE && window.THREE.OrbitControls) {
   console.log("wrapper: window.THREE.OrbitControls exists; exporting it.")
 } else {
   function wrap () {
