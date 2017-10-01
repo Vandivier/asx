@@ -2,7 +2,7 @@
 // import DataSet from '../../dist/AS/DataSet.js'
 // import Model from '../../dist/AS/Model.js'
 // import util from '../../dist/AS/util.js'
-import {ColorMap, DataSet, Model, util} from '../../dist/AS.module.js'
+const {ColorMap, DataSet, Model, util} = AS
 
 util.toWindow({ ColorMap, DataSet, Model, util })
 
