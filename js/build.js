@@ -22,11 +22,13 @@ shell.exec('node ./bin/wraplibs.js');
 
 //  npm run build-models
 shell.exec('sh ./bin/buildscripts.sh models/src');      // must use bash. on Windows we can use Git Bash
+shell.cp('models/src/*', 'models/scripts');             // index.html states `let app = document.location.search.substring(1) || 'scripts/diffuse'`
 
 //  npm run build-dist
 shell.exec('rollup -c');
 shell.cp('src/*', 'dist/AS');
 shell.exec('squash dist/AS.js > dist/AS.min.js');
 shell.exec('squash dist/AS.module.js > dist/AS.module.min.js');
+
 //  npm run build-docs "cp -Rp `bin/pkgkey.js docsfiles` docs"
 shell.cp('docs/README.md', '.');
