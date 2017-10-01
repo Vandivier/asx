@@ -6,8 +6,9 @@ This is a repository for the next version of the [AgentScript 1.0](http://agents
 
 To clone a fresh repo, for PRs or your own local verson:
 * install [node-gyp](https://github.com/nodejs/node-gyp)
+* run the following commands with [Git Bash](https://git-for-windows.github.io/), not cmd.exe or anything else.
 * `npm install` # install dev dependencies
-* `npm run build-node` # complete the install
+* `npm run build-node`
 * write your model and add models/src, then `git push`
 * enable gh-pages for your branch and open `./models?<model name>` to run a model. For example, see [http://vandivier.github.io/asx/models?diffuse](http://vandivier.github.io/asx/models?diffuse)
 
